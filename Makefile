@@ -38,7 +38,7 @@ INCLUDES	:=	include
 EXEFS_SRC	:=	exefs_src
 APP_TITLE	:=	DVD Logo
 APP_AUTHOR	:=	Simon Aarons
-APP_VERSION	:=	1.0.0
+APP_VERSION	:=	1.1.0
 ICON		:=	icon.jpg
 #---------------------------------------------------------------------------------
 # options for code generation
