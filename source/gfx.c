@@ -28,5 +28,5 @@ void drawGfx(u32 x, u32 y, u32 col) {
 }
 
 void closeGfx() {
-    framebufferClose(&fb);
+	framebufferClose(&fb);
 }
