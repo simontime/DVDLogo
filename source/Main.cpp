@@ -10,8 +10,12 @@ int main()
 	u32 xpos = 0, ypos = 0, speed = 1, col = getRandom();
 	u64 key;
 	bool dirUp = false, dirRight = true;
-	touchPosition touch;
 	
+	padConfigureInput(1, HidNpadStyleSet_NpadStandard);
+	PadState pad;
+	padInitializeDefault(&pad);
+	hidInitializeTouchScreen();
+
 	Gfx::Init();
 
 	/* Seed rand() */
@@ -19,10 +23,9 @@ int main()
 
 	while (appletMainLoop())
 	{
-		hidScanInput();
-		key = hidKeysDown(CONTROLLER_P1_AUTO);
-
-		if (key & KEY_A)
+		padUpdate(&pad);
+		key = padGetButtonsDown(&pad);
+		if (key & HidNpadButton_A)
 		{
 			/* Adjust speed */
 			switch (speed)
@@ -42,7 +45,7 @@ int main()
 			}
 		}
 
-		if (key & KEY_PLUS)
+		if (key & HidNpadButton_Plus)
 			break;
 
 		/* Direction control */
@@ -50,12 +53,14 @@ int main()
 		ypos += dirUp    ? -speed :  speed;
 
 		/* Touch screen stuff */
-		if (hidTouchCount())
+		HidTouchScreenState state={0};
+		if(hidGetTouchScreenStates(&state, 1))
 		{
-			hidTouchRead(&touch, 0);
-			
-			xpos = touch.px - LogoWidth  / 2;
-			ypos = touch.py - LogoHeight / 2;
+			if (state.count)
+			{
+				xpos = state.touches[0].x - LogoWidth  / 2;
+				ypos = state.touches[0].y - LogoHeight / 2;
+			}
 		}
 		
 		/* Check bounds */
